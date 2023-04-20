@@ -92,13 +92,13 @@ dnfRemovePrompt() {
     printNewline
 }
 
-dnfUpgrade() {
+dnfUpdate() {
     askQuestion 'Perform a system update? [Y/n]'
 
     if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
         # Force an immediate update of the repository lists
         printInfo 'Updating system! Please wait...'
-        dnf upgrade -y --refresh > /dev/null 2>&1
+        dnf update -y --refresh > /dev/null 2>&1
 
         # Remove orphaned packages
         printInfo 'Removing orphaned packages...'
@@ -338,8 +338,8 @@ elif [[ $ID == 'fedora' ]]; then
         # Spin-specific tweaks
         if [[ $VARIANT_ID == 'kde' ]]; then postinstall_FedoraKDE; fi
 
-        # Upgrade the system afterwards
-        dnfUpgrade
+        # Update the system afterwards
+        dnfUpdate
     fi
 else printError 'Distro couldn'\''t be detected or unsupported!' '1000'
 fi
