@@ -124,8 +124,8 @@ hardware_NVIDIA_GPU() {
         askQuestion 'Do you want to proceed? [Y/n]'
 
         printNewline
-        return 1
-    else printTick 'No NVIDIA GPU found!'
+        return 0
+    else printTick 'No NVIDIA GPU found!\n'
     fi
 }
 
@@ -156,9 +156,9 @@ postinstall_FedoraCore() {
 
     # Set fastestmirror to true
     if [[ $fastestmirror == false ]]; then
-        printInfo 'fastestmirror is disabled. Enabling it...\n'
+        printInfo 'fastestmirror is disabled. Enabling it...'
         dnf config-manager --setopt=fastestmirror=true --save
-        printTick 'fastestmirror enabled.'
+        printTick 'fastestmirror enabled.\n'
     else printTick 'fastestmirror is enabled.\n'
     fi
 
@@ -166,7 +166,7 @@ postinstall_FedoraCore() {
     hardware_NVIDIA_GPU
 
     # If the system has an NVIDIA GPU and the user has agreed to install the drivers
-    if [[ $? == 1 && $REPLY =~ ^[Yy]$|^$ ]]; then
+    if [[ $? == 0 && $REPLY =~ ^[Yy]$|^$ ]]; then
         # Enable RPMFusion without asking
         postinstall_RPMFusion
 
