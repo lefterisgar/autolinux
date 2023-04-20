@@ -331,12 +331,15 @@ export -f askQuestion printInfo printNewline printTick postinstall_KDE
 # Load OS identification data
 source /etc/os-release
 
+# If the distro is Ubuntu
 if [[ $ID == 'ubuntu' ]]; then
-    # If the distro is Ubuntu, fetch the flavor from the installation log
+    # Fetch the flavor from the installation log
     distroID=$(< /var/log/installer/media-info head -n1 | awk '{print $1;}')
 
+    # Welcome the user
     printWelcomeDialog "${distroID} ${VERSION_ID}"
 elif [[ $ID == 'fedora' ]]; then
+    # Welcome the user
     printWelcomeDialog "$PRETTY_NAME"
 
     if [[ $REPLY == '1' ]]; then
