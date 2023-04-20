@@ -304,11 +304,8 @@ postinstall_KDE() {
     kwriteconfig5 --file kded5rc --group Module-smbwatcher --key autoload --type bool false
     printTick 'Disabled unnecessary KDE services.'
 
-    # Ask for confirmation before disabling the touchpad service
-    askQuestion 'Does your device have a touchpad? [Y/n]'
-
     # If there is a touchpad, then tweak some touchpad-related settings
-    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+    if [[ $isTouchpadPresent -eq 1 ]]; then
         kwriteconfig5 --file kcm_touchpadrc --group Touchpad --key TapButton1 true
         printTick 'Enabled tap-to-click.'
     # Otherwise, disable the service entirely
