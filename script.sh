@@ -324,7 +324,7 @@ then
 fi
 
 # Export functions that need to be run from a local user
-export -f askQuestion printInfo printNewline postinstall_KDE
+export -f askQuestion printInfo printNewline printTick postinstall_KDE
 
 # Load OS identification data
 source /etc/os-release
