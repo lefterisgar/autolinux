@@ -132,7 +132,21 @@ hardware_NVIDIA_GPU() {
 }
 
 hardware_touchpad() {
-    if libinput list-devices | grep -i touchpad > /dev/null; then return 1; fi
+    printInfo 'Detecting touchpad...'
+
+    if libinput list-devices | grep -i touchpad > /dev/null; then
+        printTick 'Touchpad detected!'
+        printInfo 'Making sure to not disable any related service...'
+
+        isTouchpadPresent=1
+    else
+        printTick 'No touchpad detected!\n'
+
+        isTouchpadPresent=0
+    fi
+
+    # Export the result so we can access it later, from a regular user
+    export isTouchpadPresent
 }
 
 # Runs across all Fedora spins
@@ -163,6 +177,9 @@ postinstall_FedoraCore() {
         printTick 'fastestmirror enabled.\n'
     else printTick 'fastestmirror is enabled.\n'
     fi
+
+    # Detect if the system has a touchpad
+    hardware_touchpad
 
     # Detect if the system has an NVIDIA GPU
     hardware_NVIDIA_GPU
