@@ -109,6 +109,12 @@ dnfUpdate() {
     fi
 }
 
+fwUpdate() {
+    printInfo 'Updating system firmware! Please wait...'
+
+    fwupdmgr update -y > /dev/null 2>&1
+}
+
 hardware_NVIDIA_GPU() {
     printInfo 'Detecting GPU...'
 
@@ -340,6 +346,9 @@ elif [[ $ID == 'fedora' ]]; then
 
         # Update the system afterwards
         dnfUpdate
+
+        # Update the system firmware
+        fwUpdate
     fi
 else printError 'Distro couldn'\''t be detected or unsupported!' '1000'
 fi
