@@ -125,7 +125,9 @@ hardware_NVIDIA_GPU() {
 
         printNewline
         return 0
-    else printTick 'No NVIDIA GPU found!\n'
+    else
+        printTick 'No NVIDIA GPU found!\n'
+        return 1
     fi
 }
 
