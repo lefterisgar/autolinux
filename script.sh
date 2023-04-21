@@ -210,14 +210,14 @@ postinstall_FedoraCore() {
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
 
-    systemctl mask avahi-daemon.service ModemManager.service NetworkManager-wait-online.service systemd-oomd.service sys-kernel-debug.mount sys-kernel-tracing.mount > /dev/null 2>&1
+    systemctl mask avahi-daemon.service NetworkManager-wait-online.service systemd-oomd.service sys-kernel-debug.mount sys-kernel-tracing.mount > /dev/null 2>&1
 
     printTick 'Done!\n'
 
     printInfo 'Removing unnecessary software: STAGE 1 (Fedora core)'
 
     # Remove various useless applications present on all official Fedora spins (including official)
-    dnfRemovePrompt 'abrt audit jfsutils lvm2 mediawriter zram-generator' "$pkgdesc_fedoraCore_misc"
+    dnfRemovePrompt 'abrt audit jfsutils lvm2 mediawriter ModemManager zram-generator' "$pkgdesc_fedoraCore_misc"
 
     # Ask the user if he wants to remove LibreOffice
     dnfRemovePrompt 'libreoffice-core' "$pkgdesc_libreoffice"
