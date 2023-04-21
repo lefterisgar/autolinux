@@ -302,6 +302,15 @@ postinstall_FedoraKDE() {
 postinstall_KDE() {
     printInfo 'Applying KDE-specific tweaks to improve your experience!'
 
+    # Add CTRL+Alt+T shortcut for opening Konsole
+    kwriteconfig5 --file kglobalshortcutsrc --group org.kde.konsole.desktop --key _k_friendly_name "Konsole"
+    kwriteconfig5 --file kglobalshortcutsrc --group org.kde.konsole.desktop --key _launch "Ctrl+Alt+T,Ctrl+Alt+T,Konsole"
+    printTick 'Added CTRL+Alt+T as a shortcut for launching Konsole.'
+
+    # Disable logout confirmation
+    kwriteconfig5 --file ksmserverrc --group General --key confirmLogout --type bool false
+    printTick 'Disabled logout confirmation screen.'
+
     # Disable splash screen
     kwriteconfig5 --file ksplashrc --group KSplash --key Engine none
     kwriteconfig5 --file ksplashrc --group KSplash --key Theme None
@@ -310,25 +319,7 @@ postinstall_KDE() {
     # Disable top left corner activity
     kwriteconfig5 --file kwinrc --group Effect-windowview --key BorderActivateAll 9
     kwriteconfig5 --file kwinrc --group ElectricBorders --key TopLeft --delete
-    printTick 'Disabled top left corner activity.'
-
-    # Disable logout confirmation
-    kwriteconfig5 --file ksmserverrc --group General --key confirmLogout --type bool false
-    printTick 'Disabled logout confirmation screen.'
-
-    # Add CTRL+Alt+T shortcut for opening Konsole
-    kwriteconfig5 --file kglobalshortcutsrc --group org.kde.konsole.desktop --key _k_friendly_name "Konsole"
-    kwriteconfig5 --file kglobalshortcutsrc --group org.kde.konsole.desktop --key _launch "Ctrl+Alt+T,Ctrl+Alt+T,Konsole"
-    printTick 'Added CTRL+Alt+T as a shortcut for launching Konsole.'
-
-    # Disable lockscreen
-    askQuestion 'Disable the lockscreen? [Y/n]'
-
-    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
-        kwriteconfig5 --file kscreenlockerrc --group Daemon --key Autolock --type bool false
-        kwriteconfig5 --file kscreenlockerrc --group Daemon --key LockOnResume --type bool false
-        printTick 'Lockscreen has been disabled!.'
-    fi
+    printTick 'Disabled top left corner activity.\n'
 
     # Automount USB flash drives
     askQuestion 'Automount USB flash drives? [y/N]'
@@ -340,6 +331,29 @@ postinstall_KDE() {
         printTick 'USB drives will be automounted.'
     fi
 
+    printNewline
+
+    # Disable lockscreen
+    askQuestion 'Disable the lockscreen? [Y/n]'
+
+    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+        kwriteconfig5 --file kscreenlockerrc --group Daemon --key Autolock --type bool false
+        kwriteconfig5 --file kscreenlockerrc --group Daemon --key LockOnResume --type bool false
+        printTick 'Lockscreen has been disabled!.'
+    fi
+
+    printNewline
+
+    # If there is a touchpad, then tweak some touchpad-related settings
+    if [[ $isTouchpadPresent -eq 1 ]]; then
+        kwriteconfig5 --file kcm_touchpadrc --group Touchpad --key TapButton1 true
+        printTick 'Enabled tap-to-click.\n'
+    # Otherwise, disable the service entirely
+    else
+        kwriteconfig5 --file kded5rc --group Module-kded_touchpad --key autoload --type bool false
+        printTick 'Disabled the touchpad service.\n'
+    fi
+
     # Disable unnecessary KDE services
     kwriteconfig5 --file kded5rc --group Module-kded_bolt --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-kwrited --key autoload --type bool false
@@ -347,16 +361,6 @@ postinstall_KDE() {
     kwriteconfig5 --file kded5rc --group Module-remotenotifier --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-smbwatcher --key autoload --type bool false
     printTick 'Disabled unnecessary KDE services.'
-
-    # If there is a touchpad, then tweak some touchpad-related settings
-    if [[ $isTouchpadPresent -eq 1 ]]; then
-        kwriteconfig5 --file kcm_touchpadrc --group Touchpad --key TapButton1 true
-        printTick 'Enabled tap-to-click.'
-    # Otherwise, disable the service entirely
-    else
-        kwriteconfig5 --file kded5rc --group Module-kded_touchpad --key autoload --type bool false
-        printTick 'Disabled the touchpad service.'
-    fi
 }
 
 postinstall_RPMFusion() {
