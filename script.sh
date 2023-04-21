@@ -213,7 +213,16 @@ postinstall_FedoraCore() {
         askQuestion 'Install hardware accelerated codecs? [Y/n]'
 
         if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
-            dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin > /dev/null 2>&1
+            # https://rpmfusion.org/Howto/Multimedia
+            printInfo 'Installing multimedia libraries...'
+            dnf groupupdate multimedia -y --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin > /dev/null 2>&1
+
+            printInfo 'Installing Intel(R) media driver...'
+            dnf install -y intel-media-driver > /dev/null 2>&1
+
+            printInfo 'Installing AMD hardware codecs...'
+            dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld > /dev/null 2>&1
+            dnf swap -y mesa-vdpau-drivers mesa-vdpau-drivers-freeworld > /dev/null 2>&1
 
             printTick 'Codecs have been installed successfully!'
         fi
