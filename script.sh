@@ -363,7 +363,7 @@ postinstall_KDE() {
     kwriteconfig5 --file kded5rc --group Module-proxyscout --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-remotenotifier --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-smbwatcher --key autoload --type bool false
-    printTick 'Disabled unnecessary KDE services.'
+    printTick 'Disabled unnecessary KDE services.\n'
 }
 
 postinstall_RPMFusion() {
