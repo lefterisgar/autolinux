@@ -210,7 +210,7 @@ postinstall_FedoraCore() {
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
 
-    systemctl mask avahi-daemon.service NetworkManager-wait-online.service systemd-oomd.service sys-kernel-debug.mount sys-kernel-tracing.mount > /dev/null 2>&1
+    systemctl mask avahi-daemon.service gssproxy.service NetworkManager-wait-online.service systemd-oomd.service sys-kernel-debug.mount sys-kernel-tracing.mount > /dev/null 2>&1
 
     printTick 'Done!\n'
 
