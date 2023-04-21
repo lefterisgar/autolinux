@@ -299,6 +299,8 @@ postinstall_FedoraKDE() {
     # Accounts-daemon is not safe to disable on Gnome
     systemctl mask accounts-daemon.service > /dev/null 2>&1
 
+    postinstall_KDE_autologin
+
     su "$SUDO_USER" -c postinstall_KDE
 }
 
@@ -364,6 +366,16 @@ postinstall_KDE() {
     kwriteconfig5 --file kded5rc --group Module-remotenotifier --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-smbwatcher --key autoload --type bool false
     printTick 'Disabled unnecessary KDE services.\n'
+}
+
+postinstall_KDE_autologin() {
+    askQuestion 'Enable automatic login? [y/N]'
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Autologin --key Session plasma
+        kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Autologin --key User "$SUDO_USER"
+        printTick 'Automatic login has been enabled!'
+    fi
 }
 
 postinstall_RPMFusion() {
