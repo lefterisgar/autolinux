@@ -255,6 +255,9 @@ postinstall_FedoraKDE() {
     dnfRemovePrompt 'dragon elisa-player kamoso kolourpaint' "$pkgdesc_kde_multimedia1"
     dnfRemovePrompt 'gwenview okular' "$pkgdesc_kde_multimedia2"
 
+    # Accounts-daemon is not safe to disable on Gnome
+    systemctl mask accounts-daemon.service > /dev/null 2>&1
+
     su "$SUDO_USER" -c postinstall_KDE
 }
 
