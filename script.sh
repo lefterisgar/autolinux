@@ -193,13 +193,13 @@ postinstall_FedoraCore() {
         postinstall_RPMFusion
 
         # Install the drivers quietly
-        dnf install akmod-nvidia nvidia-vaapi-driver > /dev/null
+        dnf install akmod-nvidia nvidia-vaapi-driver > /dev/null 2>&1
 
         printTick 'NVIDIA drivers have been installed successfully!'
     # If those conditions were not met (i.e. RPMFusion was not enabled)
     else
         # Ask the user if he wants to enable it
-        askQuestion "Enable RPM Fusion (Free & Nonfree)? [Y/n]"
+        askQuestion 'Enable RPM Fusion (Free & Nonfree)? [Y/n]'
 
         # If the answer is yes, enable it
         if [[ $REPLY =~ ^[Yy]$|^$ ]]; then postinstall_RPMFusion; fi
