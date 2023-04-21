@@ -226,6 +226,8 @@ postinstall_FedoraCore() {
 
             printTick 'Codecs have been installed successfully!'
         fi
+
+        printNewline
     fi
 
     askQuestion 'Install Microsoft TrueType fonts? [y/N]'
@@ -240,6 +242,8 @@ postinstall_FedoraCore() {
 
         printTick 'Fonts have been installed successfully!'
     fi
+
+    printNewline
 
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
