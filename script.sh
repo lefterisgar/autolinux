@@ -228,6 +228,19 @@ postinstall_FedoraCore() {
         fi
     fi
 
+    askQuestion 'Install Microsoft TrueType fonts? [y/N]'
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        printInfo 'Installing dependencies...'
+        dnf install -y cabextract xorg-x11-font-utils > /dev/null 2>&1
+
+        printInfo 'Installing Microsoft TrueType fonts...'
+        dnf install -y \
+        https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm > /dev/null 2>&1
+
+        printTick 'Fonts have been installed successfully!'
+    fi
+
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
 
