@@ -1,6 +1,8 @@
 #!/bin/bash
 # AutoLinux - The ultimate customization and maintenance tool for Linux
 
+# shellcheck disable=SC1090
+
 readonly autolinux_version='0.0.0'
 readonly autolinux_date='01-01-1970'
 
@@ -85,6 +87,7 @@ dnfRemovePrompt() {
     askQuestion 'Is this ok? [Y/n]'
 
     if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+        # shellcheck disable=SC2086
         dnf remove -y $1 >/dev/null 2>&1
         printTick 'Successfully removed:' "$1"
     fi
