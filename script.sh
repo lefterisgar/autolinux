@@ -372,6 +372,7 @@ postinstall_KDE() {
     # Disable unnecessary KDE services
     kwriteconfig5 --file kded5rc --group Module-kded_bolt --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-kwrited --key autoload --type bool false
+    kwriteconfig5 --file kded5rc --group Module-plasmavault --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-proxyscout --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-remotenotifier --key autoload --type bool false
     kwriteconfig5 --file kded5rc --group Module-smbwatcher --key autoload --type bool false
