@@ -193,7 +193,7 @@ postinstall_FedoraCore() {
         postinstall_RPMFusion
 
         # Install the drivers quietly
-        dnf install akmod-nvidia > /dev/null
+        dnf install akmod-nvidia nvidia-vaapi-driver > /dev/null
 
         printTick 'NVIDIA drivers have been installed successfully!'
     # If those conditions were not met (i.e. RPMFusion was not enabled)
