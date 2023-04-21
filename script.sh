@@ -207,6 +207,18 @@ postinstall_FedoraCore() {
 
     printNewline
 
+    # If the user has enabled RPMFusion
+    if dnf repolist | grep rpmfusion >/dev/null; then
+        # Ask him if he wants to enable hardware accelerated codecs
+        askQuestion 'Install hardware accelerated codecs? [Y/n]'
+
+        if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+            dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin > /dev/null 2>&1
+
+            printTick 'Codecs have been installed successfully!'
+        fi
+    fi
+
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
 
