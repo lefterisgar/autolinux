@@ -52,6 +52,9 @@ printTick() {
 }
 
 printWelcomeDialog() {
+    # Clear the console
+    clear
+
     printf -- '%s\n\nAbout this script:
 ---> Version      : %s
 ---> Release date : %s
