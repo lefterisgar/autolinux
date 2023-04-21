@@ -372,8 +372,15 @@ postinstall_KDE_autologin() {
     askQuestion 'Enable automatic login? [y/N]'
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
+        truncate -s0 /etc/sddm.conf
+
+        kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Autologin --key Relogin --type bool false
         kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Autologin --key Session plasma
         kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Autologin --key User "$SUDO_USER"
+
+        kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Users --key MaximumUid 60000
+        kwriteconfig5 --file /etc/sddm.conf.d/kde_settings.conf --group Users --key MinimumUid 1000
+
         printTick 'Automatic login has been enabled!'
     fi
 }
