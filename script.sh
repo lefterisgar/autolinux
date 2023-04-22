@@ -352,6 +352,16 @@ postinstall_KDE() {
     kwriteconfig5 --file kwinrc --group ElectricBorders --key TopLeft --delete
     printTick 'Disabled top left corner activity.\n'
 
+    # Disable trash confirmation
+    kwriteconfig5 --file kiorc --group Confirmations --key ConfirmTrash --type bool false
+
+    # Do not remember opened tabs in Dolphin
+    kwriteconfig5 --file dolphinrc --group General --key ConfirmClosingMultipleTabs --type bool false
+    kwriteconfig5 --file dolphinrc --group General --key RememberOpenedTabs --type bool false
+
+    # Show permanent delete button
+    kwriteconfig5 --file kdeglobals --group KDE --key ShowDeleteCommand --type bool true
+
     # Automount USB flash drives
     askQuestion 'Automount USB flash drives? [y/N]'
 
