@@ -113,7 +113,7 @@ dnfUpdate() {
         dnf autoremove -qy
 
         # Print a success message once DNF has finished
-        printTick 'Successfully updated the system!'
+        printTick 'Successfully updated the system!\n'
     fi
 }
 
