@@ -17,7 +17,7 @@ The ultimate customization and maintenance tool for Linux.'
 
 readonly pkgdesc_bluez='The official Linux Bluetooth protocol stack. DO NOT remove it if you use Bluetooth.'
 readonly pkgdesc_cups='The printing system. DO NOT remove it if you have a printer.'
-readonly pkgdesc_fedoraCore_misc='Error reporting, LVM support, a useless live USB creation utility and RAM compression. Who needs those?'
+readonly pkgdesc_fedoraCore_misc='Error reporting, Firefox bookmarks, LVM support, a useless live USB creation utility and RAM compression. Who needs those?'
 readonly pkgdesc_fedoraKDE_misc='Redundant package manager, Input Method selection framework & D-Bus Debugger. Not needed by a regular user.'
 readonly pkgdesc_flatpak='Framework for distributing Linux applications. DO NOT disable if you don'\''t know what you are doing.'
 readonly pkgdesc_ibus='Input method framework, mostly for people who speak Chinese, Japanese, and Korean (among others). Only integrates well with Gnome and it'\''s not required if you don'\''t speak these languages.'
@@ -156,6 +156,24 @@ hardware_touchpad() {
     export isTouchpadPresent
 }
 
+postInstall_firefox() {
+    printInfo 'By customizing Firefox through policies.json, you can enhance its privacy, security, and performance, by enforcing settings and restrictions on features such as telemetry, cookies, and network protocols.'
+
+    askQuestion 'Do you want to continue? [y/N]'
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        printInfo 'Tweaking Firefox in progress...'
+
+        printInfo 'Enforcing policies via policies.json. Please wait...'
+        cp $parent_path/data/firefox/policies.json /usr/lib64/firefox/distribution/policies.json
+
+        printInfo 'Applying preferences via firefox.js. Please wait...'
+        cp $parent_path/data/firefox/firefox.js /usr/lib64/firefox/defaults/pref/firefox.js
+
+        printTick 'Changes have been applied successfully!\n'
+    fi
+}
+
 # Runs across all Fedora spins
 postinstall_FedoraCore() {
     # Perform DNF optimizations
@@ -249,6 +267,8 @@ postinstall_FedoraCore() {
 
     printNewline
 
+    postInstall_firefox
+
     # Disable a handful of systemd services to decrease the boot time
     printInfo 'Disabling unnecessary system services...'
 
@@ -259,7 +279,7 @@ postinstall_FedoraCore() {
     printInfo 'Removing unnecessary software: STAGE 1 (Fedora core)'
 
     # Remove various useless applications present on all official Fedora spins (including official)
-    dnfRemovePrompt 'abrt audit jfsutils lvm2 mediawriter ModemManager zram-generator' "$pkgdesc_fedoraCore_misc"
+    dnfRemovePrompt 'abrt audit fedora-bookmarks jfsutils lvm2 mediawriter ModemManager zram-generator' "$pkgdesc_fedoraCore_misc"
 
     # Ask the user if he wants to remove LibreOffice
     dnfRemovePrompt 'libreoffice-core' "$pkgdesc_libreoffice"
@@ -422,6 +442,9 @@ if [[ $EUID -ne 0 ]];
 then
     exec sudo -E /bin/bash "$0" "$@"
 fi
+
+# Find parent path
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" || exit ; pwd -P )
 
 # Export functions that need to be run from a local user
 export -f askQuestion printInfo printNewline printTick postinstall_KDE

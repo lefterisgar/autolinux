@@ -1,0 +1,57 @@
+{
+    "policies": {
+        "CaptivePortal": false,
+        "DisableFirefoxStudies": true,
+        "DisablePocket": true,
+        "DisableProfileRefresh": true,
+        "DisableTelemetry": true,
+        "EnableTrackingProtection": {
+            "Cryptomining": true,
+            "EmailTracking": true,
+            "Fingerprinting": true,
+            "Value": true
+        },
+        "ExtensionSettings": {
+            "uBlock0@raymondhill.net": {
+                "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+                "installation_mode": "force_installed"
+            }
+        },
+        "Homepage": {
+            "StartPage": "homepage",
+            "URL": "about:home"
+        },
+        "NoDefaultBookmarks": true,
+        "OfferToSaveLogins": false,
+        "Permissions": {
+            "Autoplay": {
+                "Default": "allow-audio-video"
+            }
+        },
+        "Preferences": {
+            "browser.aboutConfig.showWarning": {
+                "Status": "locked",
+                "Value": false
+            },
+            "browser.newtabpage.activity-stream.showSponsored": {
+                "Status": "user",
+                "Value": false
+            },
+            "browser.newtabpage.activity-stream.showSponsoredTopSites": {
+                "Status": "user",
+                "Value": false
+            },
+            "browser.tabs.firefox-view": {
+                "Status": "user",
+                "Value": false
+            }
+        },
+        "UserMessaging": {
+            "ExtensionRecommendations": false,
+            "FeatureRecommendations": false,
+            "MoreFromMozilla": false,
+            "SkipOnboarding": true,
+            "WhatsNew": false
+        }
+    }
+}
