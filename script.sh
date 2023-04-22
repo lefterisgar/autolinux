@@ -19,6 +19,7 @@ readonly pkgdesc_bluez='The official Linux Bluetooth protocol stack. DO NOT remo
 readonly pkgdesc_cups='The printing system. DO NOT remove it if you have a printer.'
 readonly pkgdesc_fedoraCore_misc='Error reporting, Firefox bookmarks, LVM support, a useless live USB creation utility and RAM compression. Who needs those?'
 readonly pkgdesc_fedoraKDE_misc='Redundant package manager, Input Method selection framework & D-Bus Debugger. Not needed by a regular user.'
+readonly pkgdesc_firefox='Customizing Firefox via policies.json can improve its privacy, security, and performance by restricting or configuring features like telemetry, cookies, and network protocols'
 readonly pkgdesc_flatpak='Framework for distributing Linux applications. DO NOT disable if you don'\''t know what you are doing.'
 readonly pkgdesc_ibus='Input method framework, mostly for people who speak Chinese, Japanese, and Korean (among others). Only integrates well with Gnome and it'\''s not required if you don'\''t speak these languages.'
 readonly pkgdesc_kde_akonadi='Backend for Kmail and many other KDE office applications (Akregator, Kontact, Korganizer, etc.). Has a reputation for slowing down the system. Also, the alternatives for e.g. Kmail are much better, rendering Akonadi both useless and redundant.'
@@ -157,7 +158,7 @@ hardware_touchpad() {
 }
 
 postInstall_firefox() {
-    printInfo 'By customizing Firefox through policies.json, you can enhance its privacy, security, and performance, by enforcing settings and restrictions on features such as telemetry, cookies, and network protocols.'
+    printInfo "$pkgdesc_firefox"
 
     askQuestion 'Do you want to continue? [Y/n]'
 
@@ -165,10 +166,10 @@ postInstall_firefox() {
         printInfo 'Tweaking Firefox in progress...'
 
         printInfo 'Enforcing policies via policies.json. Please wait...'
-        cp $parent_path/data/firefox/policies.json /usr/lib64/firefox/distribution/policies.json
+        cp "$parent_path"/data/firefox/policies.json /usr/lib64/firefox/distribution/policies.json
 
         printInfo 'Applying preferences via firefox.js. Please wait...'
-        cp $parent_path/data/firefox/firefox.js /usr/lib64/firefox/defaults/pref/firefox.js
+        cp "$parent_path"/data/firefox/firefox.js /usr/lib64/firefox/defaults/pref/firefox.js
 
         printTick 'Changes have been applied successfully!\n'
     fi
