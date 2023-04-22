@@ -159,9 +159,9 @@ hardware_touchpad() {
 postInstall_firefox() {
     printInfo 'By customizing Firefox through policies.json, you can enhance its privacy, security, and performance, by enforcing settings and restrictions on features such as telemetry, cookies, and network protocols.'
 
-    askQuestion 'Do you want to continue? [y/N]'
+    askQuestion 'Do you want to continue? [Y/n]'
 
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
         printInfo 'Tweaking Firefox in progress...'
 
         printInfo 'Enforcing policies via policies.json. Please wait...'
