@@ -157,6 +157,12 @@ hardware_touchpad() {
     export isTouchpadPresent
 }
 
+hardware_trim() {
+    printInfo 'Trimming all supported drives! Please wait...'
+    fstrim -a
+    printTick 'Trim completed!\n'
+}
+
 postInstall_firefox() {
     printInfo "$pkgdesc_firefox"
 
@@ -486,6 +492,9 @@ elif [[ $ID == 'fedora' ]]; then
 
         # Update the system firmware
         fwUpdate
+
+        # Trim all supported devices
+        hardware_trim
     fi
 else printError 'Distro couldn'\''t be detected or unsupported!' '1000'
 fi
