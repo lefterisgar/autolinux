@@ -210,6 +210,27 @@ postinstall_FedoraCore() {
     else printTick 'fastestmirror is enabled.\n'
     fi
 
+    # Configure automatic updates
+    askQuestion 'Configure automatic updates? [Y/n]'
+
+    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+        # Install dnf-automatic
+        printInfo 'Installing dnf-automatic...'
+        dnf install -y dnf-automatic > /dev/null 2>&1
+
+        # Configure dnf-automatic
+        sed -i 's/apply_updates = no/apply_updates = yes/g' /etc/dnf/automatic.conf
+
+        # Configure the timer
+        printf '[Timer]\nOnCalendar=*-*-* 8:00\nRandomizedDelaySec=60m\nPersistent=true\n' | sudo tee /etc/systemd/system/dnf-automatic.timer.d/custom.conf > /dev/null
+
+        # Enable it
+        systemctl daemon-reload
+        systemctl enable --now dnf-automatic.timer
+
+        printTick 'Automatic updates have been enabled!.'
+    fi
+
     # Detect if the system has a touchpad
     hardware_touchpad
 
