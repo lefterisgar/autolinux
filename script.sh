@@ -231,6 +231,8 @@ postinstall_FedoraCore() {
         printTick 'Automatic updates have been enabled!.'
     fi
 
+    printNewline
+
     # Detect if the system has a touchpad
     hardware_touchpad
 
