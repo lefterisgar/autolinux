@@ -221,11 +221,7 @@ postinstall_FedoraCore() {
         # Configure dnf-automatic
         sed -i 's/apply_updates = no/apply_updates = yes/g' /etc/dnf/automatic.conf
 
-        # Configure the timer
-        printf '[Timer]\nOnCalendar=*-*-* 8:00\nRandomizedDelaySec=60m\nPersistent=true\n' | sudo tee /etc/systemd/system/dnf-automatic.timer.d/custom.conf > /dev/null
-
         # Enable it
-        systemctl daemon-reload
         systemctl enable --now dnf-automatic.timer
 
         printTick 'Automatic updates have been enabled!.'
