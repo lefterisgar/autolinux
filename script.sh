@@ -393,7 +393,7 @@ postinstall_KDE() {
 
     # If there is a touchpad, then tweak some touchpad-related settings
     if [[ $isTouchpadPresent -eq 1 ]]; then
-        kwriteconfig5 --file kcm_touchpadrc --group Touchpad --key TapButton1 true
+        kwriteconfig5 --file kcmtouchpadrc --group Touchpad --key TapButton1 true
         printTick 'Enabled tap-to-click.\n'
     # Otherwise, disable the service entirely
     else
