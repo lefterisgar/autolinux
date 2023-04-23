@@ -78,6 +78,17 @@ Please select how do you want to proceed:
     printf '\n\n'
 }
 
+printSuccessDialog() {
+    printTick 'Your computer is ready to use! However, it is strictly recommended that you do a reboot.'
+
+    askQuestion 'Do you want to reboot the system? [Y/n]'
+
+    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then
+        # Reboot the system
+        reboot now
+    fi
+}
+
 askQuestion() {
     printf -- '\e[0m[\e[1;94m?\e[0m] %b ' "${*}"
     read -n 1 -r
@@ -515,5 +526,7 @@ elif [[ $ID == 'fedora' ]]; then
         # Trim all supported devices
         hardware_trim
     fi
+
+    printSuccessDialog
 else printError 'Distro couldn'\''t be detected or unsupported!' '1000'
 fi
