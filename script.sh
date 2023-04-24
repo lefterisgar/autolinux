@@ -24,7 +24,6 @@ readonly pkgdesc_flatpak='Framework for distributing Linux applications. DO NOT 
 readonly pkgdesc_ibus='Input method framework, mostly for people who speak Chinese, Japanese, and Korean (among others). Only integrates well with Gnome and it'\''s not required if you don'\''t speak these languages.'
 readonly pkgdesc_kde_akonadi='Backend for Kmail and many other KDE office applications (Akregator, Kontact, Korganizer, etc.). Has a reputation for slowing down the system. Also, the alternatives for e.g. Kmail are much better, rendering Akonadi both useless and redundant.'
 readonly pkgdesc_kde_games='Fun games from KDE. Safe to remove.'
-readonly pkgdesc_kde_kwallet='Password management tool. Removing it may break some applications that rely on it.'
 readonly pkgdesc_kde_multimedia1='Multimedia from KDE (Part 1). Includes a multimedia player, a music player, a camera application and paint. Useful for most users.'
 readonly pkgdesc_kde_multimedia2='Multimedia from KDE (Part 2). Includes KDE'\''s image viewer and document viewer. Useful for most users.'
 readonly pkgdesc_kde_tools1='Tools from KDE (Part 1). IRC, RDC and VNC clients & software used to improve the accessibility of the desktop (e.g. magnifier). None of which a regular user would likely ever need.'
@@ -354,10 +353,6 @@ postinstall_FedoraKDE() {
     dnfRemovePrompt 'dragon elisa-player kamoso kolourpaint' "$pkgdesc_kde_multimedia1"
     dnfRemovePrompt 'gwenview okular' "$pkgdesc_kde_multimedia2"
 
-    dnfRemovePrompt 'kwalletmanager5' "$pkgdesc_kde_kwallet"
-
-    if [[ $REPLY =~ ^[Yy]$|^$ ]]; then export disableKwallet=true; fi
-
     # Accounts-daemon is not safe to disable on Gnome
     systemctl mask accounts-daemon.service > /dev/null 2>&1
 
@@ -429,11 +424,6 @@ postinstall_KDE() {
     else
         kwriteconfig5 --file kded5rc --group Module-kded_touchpad --key autoload --type bool false
         printTick 'Disabled the touchpad service.\n'
-    fi
-
-    if [[ $disableKwallet ]]; then
-        kwriteconfig5 --file kwalletrc --group Wallet --key Enabled --type bool false
-        printTick 'Disabled KWallet.\n'
     fi
 
     # Disable unnecessary KDE services
